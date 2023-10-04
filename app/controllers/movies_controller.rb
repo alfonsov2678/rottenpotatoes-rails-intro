@@ -41,6 +41,7 @@ class MoviesController < ApplicationController
     
     if session[:sort_column] || session[:ratings]
       @all_ratings = Movie.all_ratings
+      params[:home]="1"
       @sort_column = session[:sort_column] || ""
       @params_column = params[:sortColumn] || ""
       if session[:ratings].class == Hash
@@ -100,7 +101,6 @@ class MoviesController < ApplicationController
           params[:ratings] = Movie.all_ratings
         end
       end
-      params[:home]="1"
     else
       @all_ratings = Movie.all_ratings
       @ratings_to_show = []
