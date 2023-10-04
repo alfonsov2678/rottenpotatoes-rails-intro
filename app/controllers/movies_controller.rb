@@ -11,8 +11,8 @@ class MoviesController < ApplicationController
 
     if session[:sort_column] || session[:ratings]
       @sort_column = session[:sort_column] || ""
-      if session[:ratings]
-          @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
+      if session[:ratings].class == Hash
+        @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
         @ratings_to_show = params[:ratings].keys()
       else
         @ratings_to_show =  []
