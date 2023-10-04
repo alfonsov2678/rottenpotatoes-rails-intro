@@ -38,7 +38,7 @@ class MoviesController < ApplicationController
       end
 
       session[:sort_column] = @sort_column
-      session[:ratings] = @ratings_to_show
+      session[:ratings] = params[:ratings]
     end
     # CONTINUE TO INDEX NORMALLY
   end
