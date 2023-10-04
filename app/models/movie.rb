@@ -10,6 +10,7 @@ class Movie < ActiveRecord::Base
     end
   end
   def self.all_ratings
-    ['G', 'PG', 'PG-13', 'R']
+    ratings_hashmap = ['G', 'PG', 'PG-13', 'R'].each_with_object({}) do |item, hash|
+      hash[item] = 1
   end
  end

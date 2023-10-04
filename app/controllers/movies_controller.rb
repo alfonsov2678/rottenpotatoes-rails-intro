@@ -13,7 +13,11 @@ class MoviesController < ApplicationController
       if session[:ratings]
         @ratings_to_show = session[:ratings]
       else
-        @ratings_to_show = []
+        @ratings_to_show = Movie.all_ratings
+
+        hashmap = array.each_with_object({}) do |item, hash|
+          hash[item] = item.length
+        end
       end
       @sort_column = session[:sort_column] || ""
       @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
