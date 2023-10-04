@@ -23,7 +23,7 @@ class MoviesController < ApplicationController
             @ratings_to_show = params[:ratings].keys()
             session[:sort_column] = @params_column
           end
-        else
+        elsif !params[:ratings].nil?
           if session[:sort_column] == @params_column
             @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
             @ratings_to_show = params[:ratings].keys()
@@ -35,6 +35,9 @@ class MoviesController < ApplicationController
           @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
           @ratings_to_show = params[:ratings].keys()
           session[:ratings] = params[:ratings]
+        else
+          @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
+          @ratings_to_show = session[:ratings].keys()
         end
       else
         @all_ratings = Movie.all_ratings
