@@ -18,7 +18,7 @@
     <tr>
       <th class="<%= 'hilite bg-warning' if @sort_column == 'title' %>"><%= link_to 'Movie Title', movies_path(sortColumn: 'title', ratings: Hash[@ratings_to_show.collect { |item| [item, '1'] }]), id: 'title_header', class: (@sort_column == 'title' ? 'hilite bg-warning' : '')%></th>
       <th>Rating</th>
-      <th>Release Date</th>
+      <th class="<%= 'hilite bg-warning' if @sort_column == 'release_date' %>"><%= link_to 'Release Date', movies_path(sortColumn: 'release_date', ratings: Hash[@ratings_to_show.collect { |item| [item, '1'] }]), id: 'release_date_header', class: (@sort_column == 'release_date' ? 'hilite bg-warning' : '')%></th>
       <th>More Info</th>
     </tr>
   </thead>
