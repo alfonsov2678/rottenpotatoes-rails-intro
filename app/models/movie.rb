@@ -7,6 +7,7 @@ class Movie
       where(rating: ratings_list)
     else
       all
+    end
   end
   def self.all_ratings
     ['G', 'PG', 'PG-13', 'R']
