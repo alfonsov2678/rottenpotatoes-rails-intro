@@ -20,7 +20,7 @@ class MoviesController < ApplicationController
         @ratings_to_show = params[:ratings].keys()
         @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
       else
-        @ratings_to_show = Movie.all_ratings
+        @ratings_to_show = []
         @movies = Movie.with_ratings(nil).order(@sort_column)
       end
 
