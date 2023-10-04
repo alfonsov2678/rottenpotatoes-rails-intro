@@ -9,12 +9,13 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
     @ratings_to_show = []
+    @sort_column = params[:sortColumn] || ""
     if params[:ratings]
       @ratings_to_show = params[:ratings].keys()
-      @movies = Movie.with_ratings(params[:ratings].keys())
+      @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
     else
       @ratings_to_show = []
-      @movies = Movie.with_ratings(nil)
+      @movies = Movie.with_ratings(nil).order(@sort_column)
     end
   end
 
@@ -50,6 +51,6 @@ class MoviesController < ApplicationController
   # Making "internal" methods private is not required, but is a common practice.
   # This helps make clear which methods respond to requests, and which ones do not.
   def movie_params
-    params.require(:movie).permit(:title, :rating, :description, :release_date)
+    params.require(:movie).permit(:title, :rating, :description, :release_date, :sortColumn)
   end
 end
