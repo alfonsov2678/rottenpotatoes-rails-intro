@@ -24,9 +24,13 @@ class MoviesController < ApplicationController
       @sort_column = params[:sortColumn] || ""
       if params[:ratings]
         @ratings_to_show = params[:ratings].keys()
+        session[:ratings] = params[:ratings]
+        session[:sort_column] = @sort_column
         @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
       else
         @ratings_to_show = []
+        session[:ratings] = []
+        session[:sort_column] = @sort_column
         @movies = Movie.with_ratings(nil).order(@sort_column)
       end
 
@@ -34,8 +38,6 @@ class MoviesController < ApplicationController
         params[:ratings] = Movie.all_ratings
       end
 
-      session[:sort_column] = @sort_column
-      session[:ratings] = params[:ratings]
     end
     # CONTINUE TO INDEX NORMALLY
   end
