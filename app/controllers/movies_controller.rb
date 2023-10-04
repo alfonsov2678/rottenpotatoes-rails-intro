@@ -30,7 +30,11 @@ class MoviesController < ApplicationController
   
       session[:sortColumn] = @sort_column
       session[:ratings] = @ratings_to_show
+    else 
+      @all_ratings ||= []
     end
+
+
     # CONTINUE TO INDEX NORMALLY
   end
 
