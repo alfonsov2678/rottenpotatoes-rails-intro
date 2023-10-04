@@ -94,6 +94,7 @@ class MoviesController < ApplicationController
     end
     # CONTINUE TO INDEX NORMALLY
     redirect_to movies_path(sort_by: session[:sort_by], rating: session[:rating])
+    return 
   end
 
   def new
