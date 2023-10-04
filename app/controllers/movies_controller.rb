@@ -9,6 +9,31 @@ class MoviesController < ApplicationController
   def index
     # CHECK IF BLANK AND BEHAVE NORMALLY
 
+
+    if params[:ratings].blank?
+      if params[:sortColumn].blank?
+        if !(session[:ratings].blank? || session[:sort_column].blank?)
+          redirect_to movies_path(sortColumn: '', ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
+          session[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
+          session[:sortColumn] = ''
+        end
+      else
+        if !(session[:ratings].blank?)
+          redirect_to movies_path(sortColumn: params[:sort_column], ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
+          session[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
+          session[:sortColumn] = params[:sortColumn]
+        end
+      end
+    else
+      if params[:sortColumn].blank?
+        if !(session[:sort_column].blank?)
+          redirect_to movies_path(sortColumn: '', ratings: params[:ratings])
+          session[:ratings] = params[:ratings]
+          session[:sortColumn] = ''
+        end
+      end
+    end
+    
     if session[:sort_column] || session[:ratings]
       @all_ratings = Movie.all_ratings
       @sort_column = session[:sort_column] || ""
@@ -93,29 +118,6 @@ class MoviesController < ApplicationController
       
     end
 
-    if params[:ratings].blank?
-      if params[:sortColumn].blank?
-        if !(session[:ratings].blank? || session[:sort_column].blank?)
-          redirect_to movies_path(sortColumn: '', ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
-          session[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
-          session[:sortColumn] = ''
-        end
-      else
-        if !(session[:ratings].blank?)
-          redirect_to movies_path(sortColumn: params[:sort_column], ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
-          session[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
-          session[:sortColumn] = params[:sortColumn]
-        end
-      end
-    else
-      if params[:sortColumn].blank?
-        if !(session[:sort_column].blank?)
-          redirect_to movies_path(sortColumn: '', ratings: params[:ratings])
-          session[:ratings] = params[:ratings]
-          session[:sortColumn] = ''
-        end
-      end
-    end
     
   end
 
