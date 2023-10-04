@@ -7,6 +7,16 @@ class MoviesController < ApplicationController
   end
 
   def index
+    # CHECK IF BLANK AND BEHAVE ACCORDINGLY
+    if params[:sortColumn].blank? && params[:ratings].blank?
+      params[:sortColumn] = session[:sortColumn] if !session[:sortColumn].nil?
+      params[:ratings] = session[:ratings] if !session[:ratings].nil?
+    end
+    if params[:ratings].blank?
+      params[:ratings] = Movie.all_ratings
+    end
+
+    # CONTINUE TO INDEX NORMALLY
     @all_ratings = Movie.all_ratings
     @ratings_to_show = []
     @sort_column = params[:sortColumn] || ""
@@ -17,6 +27,8 @@ class MoviesController < ApplicationController
       @ratings_to_show = []
       @movies = Movie.with_ratings(nil).order(@sort_column)
     end
+    session[:sortColumn] = @sort_column
+    session[:ratings] = @ratings_to_show
   end
 
   def new
