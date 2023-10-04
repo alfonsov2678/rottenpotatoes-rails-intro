@@ -93,9 +93,11 @@ class MoviesController < ApplicationController
       
     end
     # REDIRECT
-    if @sort_column && @ratings
-      redirect_to movies_path(sort_column: @sort_column, rating: @ratings.join(',')) unless params[:sort_column] == @sort_column && params[:rating] == @ratings.join(',')
-      return 
+    sort_target = params[:sortColumn] || session[:sort_column]
+    rating_target = params[:ratings] ? params[:ratings].keys() : (session[:ratings] ? session[:ratings].keys() : [])
+    if sort_target != params[:sortColumn] || rating_target.sort != (params[:ratings] ? params[:ratings].keys().sort : [])
+      redirect_to movies_path(sortColumn: sort_target, ratings: rating_target)
+      return
     end
   end
 
