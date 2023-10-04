@@ -10,6 +10,7 @@ class MoviesController < ApplicationController
     # CHECK IF BLANK AND BEHAVE NORMALLY
 
     if session[:sort_column] || session[:ratings]
+      @all_ratings = Movie.all_ratings
       @sort_column = session[:sort_column] || ""
       if session[:ratings].class == Hash
         @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
