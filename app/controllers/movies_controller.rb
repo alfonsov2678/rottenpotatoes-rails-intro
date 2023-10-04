@@ -11,6 +11,7 @@ class MoviesController < ApplicationController
     if params[:sortColumn].blank? && params[:ratings].blank?
       params[:sortColumn] = session[:sortColumn] if !session[:sortColumn].nil?
       params[:ratings] = session[:ratings] if !session[:ratings].nil?
+      redirect_to movies_path(sortColumn: params[:sortColumn], ratings: params[:ratings]) and return
     end
     if params[:ratings].blank?
       params[:ratings] = Movie.all_ratings
