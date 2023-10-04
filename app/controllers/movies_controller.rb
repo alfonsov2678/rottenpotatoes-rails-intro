@@ -8,49 +8,22 @@ class MoviesController < ApplicationController
 
   def index
     # CHECK IF BLANK AND BEHAVE NORMALLY
-    if !session[:sortColumn].blank? && !session[:ratings].blank?
-      @ratings_to_show = session[:ratings].keys()
-      @movies = Movie.with_ratings(session[:ratings].keys()).order(session[:sortColumn])
-      @all_ratings =  []
-    elsif params[:sortColumn].blank? && params[:ratings].blank?
-      @all_ratings = Movie.all_ratings
+    @all_ratings = Movie.all_ratings
+    @ratings_to_show = []
+    @sort_column = params[:sortColumn] || ""
+    if params[:ratings]
+      @ratings_to_show = params[:ratings].keys()
+      @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
+    else
       @ratings_to_show = []
-      @sort_column = params[:sortColumn] || ""
-      if params[:ratings]
-        @ratings_to_show = params[:ratings].keys()
-        @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
-      else
-        @ratings_to_show = Movie.all_ratings
-        @movies = Movie.with_ratings(nil).order(@sort_column)
-      end
-
-      if params[:ratings].blank?
-        params[:ratings] = Movie.all_ratings
-      end
-  
-      session[:sortColumn] = @sort_column
-      session[:ratings] = @ratings_to_show
-    else 
-      @all_ratings = Movie.all_ratings
-      @ratings_to_show = []
-      @sort_column = params[:sortColumn] || ""
-      if params[:ratings]
-        @ratings_to_show = params[:ratings].keys()
-        @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
-      else
-        @ratings_to_show = Movie.all_ratings
-        @movies = Movie.with_ratings(nil).order(@sort_column)
-      end
-
-      if params[:ratings].blank?
-        params[:ratings] = Movie.all_ratings
-      end
-  
-      session[:sortColumn] = @sort_column
-      session[:ratings] = @ratings_to_show
+      @movies = Movie.with_ratings(nil).order(@sort_column)
     end
 
+    if params[:ratings].blank?
+      params[:ratings] = Movie.all_ratings
+    end
 
+    
     # CONTINUE TO INDEX NORMALLY
   end
 
