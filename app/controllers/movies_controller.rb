@@ -9,33 +9,33 @@ class MoviesController < ApplicationController
   def index
     # CHECK IF BLANK AND BEHAVE NORMALLY
 
-
-    if params[:ratings].blank?
-      if params[:sortColumn].blank?
-        if params[:home].blank?
-          session[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
-          session[:sortColumn] = ''
-          params[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
-          params[:sortColumn] = ''
-          redirect_to movies_path(sortColumn: '', ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
-          params[:home]="1"
-          return
+    if params[:home].blank?
+      if params[:ratings].blank?
+        if params[:sortColumn].blank?
+            session[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
+            session[:sortColumn] = ''
+            params[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
+            params[:sortColumn] = ''
+            redirect_to movies_path(sortColumn: '', ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
+            params[:home]="1"
+            return
+          end
+        else
+          if !(session[:ratings].blank?)
+            session[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
+            session[:sortColumn] = params[:sortColumn]
+            redirect_to movies_path(sortColumn: params[:sort_column], ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
+            return
+          end
         end
       else
-        if !(session[:ratings].blank?)
-          session[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
-          session[:sortColumn] = params[:sortColumn]
-          redirect_to movies_path(sortColumn: params[:sort_column], ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
-          return
-        end
-      end
-    else
-      if params[:sortColumn].blank?
-        if !(session[:sort_column].blank?)
-          session[:ratings] = params[:ratings]
-          session[:sortColumn] = ''
-          redirect_to movies_path(sortColumn: '', ratings: params[:ratings])
-          return 
+        if params[:sortColumn].blank?
+          if !(session[:sort_column].blank?)
+            session[:ratings] = params[:ratings]
+            session[:sortColumn] = ''
+            redirect_to movies_path(sortColumn: '', ratings: params[:ratings])
+            return 
+          end
         end
       end
     end
@@ -160,6 +160,6 @@ class MoviesController < ApplicationController
   # Making "internal" methods private is not required, but is a common practice.
   # This helps make clear which methods respond to requests, and which ones do not.
   def movie_params
-    params.require(:movie).permit(:title, :rating, :description, :release_date, :sortColumn)
+    params.require(:movie).permit(:title, :rating, :description, :release_date, :sortColumn, :home)
   end
 end
