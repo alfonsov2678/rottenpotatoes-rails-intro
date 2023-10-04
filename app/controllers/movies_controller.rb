@@ -10,18 +10,14 @@ class MoviesController < ApplicationController
     # CHECK IF BLANK AND BEHAVE NORMALLY
 
     if session[:sort_column] || session[:ratings]
-      if session[:ratings]
-        @ratings_to_show = session[:ratings]
-      else
-        @ratings_to_show = Movie.all_ratings
-
-        hashmap = array.each_with_object({}) do |item, hash|
-          hash[item] = item.length
-        end
-      end
       @sort_column = session[:sort_column] || ""
-      @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
-      @ratings_to_show = params[:ratings].keys()
+      if session[:ratings]
+          @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
+        @ratings_to_show = params[:ratings].keys()
+      else
+        @ratings_to_show =  []
+        @movies = Movie.with_ratings(nil).order(@sort_column)
+      end
     else
       @all_ratings = Movie.all_ratings
       @ratings_to_show = []
