@@ -7,29 +7,30 @@ class MoviesController < ApplicationController
   end
 
   def index
-    # CHECK IF BLANK AND BEHAVE ACCORDINGLY
-    if params[:sortColumn].blank? && params[:ratings].blank?
-      params[:sortColumn] = session[:sortColumn] if !session[:sortColumn].nil?
-      params[:ratings] = session[:ratings] if !session[:ratings].nil?
-      redirect_to movies_path(sortColumn: params[:sortColumn], ratings: params[:ratings]) and return
+    # CHECK IF BLANK AND BEHAVE NORMALLY
+    if !session[:sortColumn].blank? && !session[:ratings].blank?
+      @ratings_to_show = session[:ratings].keys()
+      @movies = Movie.with_ratings(session[:ratings].keys()).order(session[:sortColumn])
+    end
+    else if params[:sortColumn].blank? && params[:ratings].blank?
+      @all_ratings = Movie.all_ratings
+      @ratings_to_show = []
+      @sort_column = params[:sortColumn] || ""
+      if params[:ratings]
+        @ratings_to_show = params[:ratings].keys()
+        @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
+      else
+        @ratings_to_show = []
+        @movies = Movie.with_ratings(nil).order(@sort_column)
+      end
+      session[:sortColumn] = @sort_column
+      session[:ratings] = @ratings_to_show
     end
     if params[:ratings].blank?
       params[:ratings] = Movie.all_ratings
     end
 
     # CONTINUE TO INDEX NORMALLY
-    @all_ratings = Movie.all_ratings
-    @ratings_to_show = []
-    @sort_column = params[:sortColumn] || ""
-    if params[:ratings]
-      @ratings_to_show = params[:ratings].keys()
-      @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
-    else
-      @ratings_to_show = []
-      @movies = Movie.with_ratings(nil).order(@sort_column)
-    end
-    session[:sortColumn] = @sort_column
-    session[:ratings] = @ratings_to_show
   end
 
   def new
