@@ -93,7 +93,7 @@ class MoviesController < ApplicationController
       
     end
     # REDIRECT
-    if !(params[:sort_column].present? && params[:rating].present?)
+    if !(params[:sort_column].present? && params[:rating].present?) && (session[:sort_column].present? && session[:rating].present?)
       redirect_to movies_path(sort_column: session[:sort_column], rating: session[:rating])
       return
     end
