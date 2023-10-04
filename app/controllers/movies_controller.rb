@@ -18,7 +18,7 @@ class MoviesController < ApplicationController
           params[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
           params[:sortColumn] = ''
           redirect_to movies_path(sortColumn: '', ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
-          params[:home]=1
+          params[:home]="1"
           return
         end
       else
@@ -101,6 +101,7 @@ class MoviesController < ApplicationController
           params[:ratings] = Movie.all_ratings
         end
       end
+      params[:home]="1"
     else
       @all_ratings = Movie.all_ratings
       @ratings_to_show = []
