@@ -18,19 +18,27 @@ class MoviesController < ApplicationController
           if session[:sort_column] == @params_column
             @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
             @ratings_to_show = params[:ratings].keys()
-          else
+          elsif !params[:sort].nil? 
             @movies = Movie.with_ratings(session[:ratings].keys()).order(@params_column)
             @ratings_to_show = params[:ratings].keys()
             session[:sort_column] = @params_column
+          else
+            @movies = Movie.with_ratings(session[:ratings].keys()).order(session[:sort_column])
+            @ratings_to_show = session[:ratings].keys()
+            params[:sortColumn] = session[:sort_column]
           end
         elsif !params[:ratings].nil?
           if session[:sort_column] == @params_column
             @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
             @ratings_to_show = params[:ratings].keys()
-          else
+          elsif !params[:sort].nil? 
             @movies = Movie.with_ratings(session[:ratings].keys()).order(@params_column)
             @ratings_to_show = params[:ratings].keys()
             session[:sort_column] = @params_column
+          else
+            @movies = Movie.with_ratings(session[:ratings].keys()).order(session[:sort_column])
+            @ratings_to_show = session[:ratings].keys()
+            params[:sortColumn] = session[:sort_column]
           end
           @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
           @ratings_to_show = params[:ratings].keys()
