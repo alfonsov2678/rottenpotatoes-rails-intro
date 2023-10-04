@@ -12,9 +12,31 @@ class MoviesController < ApplicationController
     if session[:sort_column] || session[:ratings]
       @all_ratings = Movie.all_ratings
       @sort_column = session[:sort_column] || ""
+      @params_column = params[:sortColumn] || ""
       if session[:ratings].class == Hash
-        @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
-        @ratings_to_show = params[:ratings].keys()
+
+        if session[:ratings] == params[:ratings]
+          if session[:sort_column] == @params_column
+            @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
+            @ratings_to_show = params[:ratings].keys()
+          else
+            @movies = Movie.with_ratings(session[:ratings].keys()).order(@params_column)
+            @ratings_to_show = params[:ratings].keys()
+            session[:sort_column] = @params_column
+          end
+        else
+          if session[:sort_column] == @params_column
+            @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
+            @ratings_to_show = params[:ratings].keys()
+          else
+            @movies = Movie.with_ratings(session[:ratings].keys()).order(@params_column)
+            @ratings_to_show = params[:ratings].keys()
+            session[:sort_column] = @params_column
+          end
+          @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
+          @ratings_to_show = params[:ratings].keys()
+          session[:ratings] = params[:ratings]
+        end
       else
         @ratings_to_show =  []
         @movies = Movie.with_ratings(nil).order(@sort_column)
