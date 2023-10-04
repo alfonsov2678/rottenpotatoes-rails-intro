@@ -8,17 +8,10 @@ class MoviesController < ApplicationController
 
   def index
     # CHECK IF BLANK AND BEHAVE NORMALLY
-
-    if params[:ratings].is_a?(Hash)
-      @ratings_to_show = params[:ratings].keys
-    else
-      @ratings_to_show = params[:ratings] || []
-    end
-
     if !session[:sortColumn].blank? && !session[:ratings].blank?
       @ratings_to_show = session[:ratings].keys()
       @movies = Movie.with_ratings(session[:ratings].keys()).order(session[:sortColumn])
-      @all_ratings = []
+      @all_ratings =  []
     elsif params[:sortColumn].blank? && params[:ratings].blank?
       @all_ratings = Movie.all_ratings
       @ratings_to_show = []
@@ -27,7 +20,7 @@ class MoviesController < ApplicationController
         @ratings_to_show = params[:ratings].keys()
         @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
       else
-        @ratings_to_show = []
+        @ratings_to_show = Movie.all_ratings
         @movies = Movie.with_ratings(nil).order(@sort_column)
       end
 
