@@ -60,7 +60,7 @@ class MoviesController < ApplicationController
           session[:sort_column] = @sort_column
           @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
         else
-          @ratings_to_show = []
+          @ratings_to_show = Movie.all_ratings
           session[:ratings] = []
           session[:sort_column] = @sort_column
           @movies = Movie.with_ratings(nil).order(@sort_column)
@@ -80,7 +80,7 @@ class MoviesController < ApplicationController
         session[:sort_column] = @sort_column
         @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
       else
-        @ratings_to_show = []
+        @ratings_to_show = Movie.all_ratings
         session[:ratings] = []
         session[:sort_column] = @sort_column
         @movies = Movie.with_ratings(nil).order(@sort_column)
@@ -90,8 +90,10 @@ class MoviesController < ApplicationController
         params[:ratings] = Movie.all_ratings
       end
 
+      
     end
     # CONTINUE TO INDEX NORMALLY
+    redirect_to movies_path(sort_by: session[:sort_by], rating: session[:rating])
   end
 
   def new
