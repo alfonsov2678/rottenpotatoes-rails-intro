@@ -21,6 +21,7 @@ class MoviesController < ApplicationController
       end
       @sort_column = session[:sort_column] || ""
       @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
+      @ratings_to_show = params[:ratings].keys()
     else
       @all_ratings = Movie.all_ratings
       @ratings_to_show = []
