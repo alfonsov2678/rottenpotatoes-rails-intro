@@ -14,7 +14,6 @@ class MoviesController < ApplicationController
       @sort_column = session[:sort_column] || ""
       @params_column = params[:sortColumn] || ""
       if session[:ratings].class == Hash
-
         if session[:ratings] == params[:ratings]
           if session[:sort_column] == @params_column
             @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
@@ -38,8 +37,24 @@ class MoviesController < ApplicationController
           session[:ratings] = params[:ratings]
         end
       else
-        @ratings_to_show =  []
-        @movies = Movie.with_ratings(nil).order(@sort_column)
+        @all_ratings = Movie.all_ratings
+        @ratings_to_show = []
+        @sort_column = params[:sortColumn] || ""
+        if params[:ratings]
+          @ratings_to_show = params[:ratings].keys()
+          session[:ratings] = params[:ratings]
+          session[:sort_column] = @sort_column
+          @movies = Movie.with_ratings(params[:ratings].keys()).order(@sort_column)
+        else
+          @ratings_to_show = []
+          session[:ratings] = []
+          session[:sort_column] = @sort_column
+          @movies = Movie.with_ratings(nil).order(@sort_column)
+        end
+  
+        if params[:ratings].blank?
+          params[:ratings] = Movie.all_ratings
+        end
       end
     else
       @all_ratings = Movie.all_ratings
