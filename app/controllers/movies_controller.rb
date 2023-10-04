@@ -92,13 +92,8 @@ class MoviesController < ApplicationController
 
       
     end
-    # REDIRECT
-    sort_target = params[:sortColumn] || session[:sort_column]
-    rating_target = params[:ratings] ? params[:ratings].keys() : (session[:ratings] ? session[:ratings].keys() : [])
-    if sort_target != params[:sortColumn] || rating_target.sort != (params[:ratings] ? params[:ratings].keys().sort : [])
-      redirect_to movies_path(sortColumn: sort_target, ratings: rating_target)
-      return
-    end
+
+    
   end
 
   def new
