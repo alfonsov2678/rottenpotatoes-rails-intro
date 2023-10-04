@@ -92,8 +92,11 @@ class MoviesController < ApplicationController
 
       
     end
-    # CONTINUE TO INDEX NORMALLY
-    redirect_to movies_path(sort_by: session[:sort_by], rating: session[:rating])
+    # REDIRECT
+    if !(params[:sort_column].present? && params[:rating].present?)
+      redirect_to movies_path(sort_column: session[:sort_column], rating: session[:rating])
+      return
+    end
     return 
   end
 
