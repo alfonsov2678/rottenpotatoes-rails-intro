@@ -14,11 +14,11 @@ class MoviesController < ApplicationController
     else
       @ratings_to_show = params[:ratings] || []
     end
-    
+
     if !session[:sortColumn].blank? && !session[:ratings].blank?
       @ratings_to_show = session[:ratings].keys()
       @movies = Movie.with_ratings(session[:ratings].keys()).order(session[:sortColumn])
-      @all_ratings = Movie.all_ratings
+      @all_ratings = []
     elsif params[:sortColumn].blank? && params[:ratings].blank?
       @all_ratings = Movie.all_ratings
       @ratings_to_show = []
