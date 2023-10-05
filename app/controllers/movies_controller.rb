@@ -21,6 +21,7 @@ class MoviesController < ApplicationController
               params[:sortColumn] = session[:sort_column]
             else
               params[:sortColumn] = ''
+            end
             redirect_to movies_path(sortColumn: '', ratings: session[:ratings], 'home': '1')
             return
         else
