@@ -16,8 +16,8 @@ class MoviesController < ApplicationController
             session[:sortColumn] = ''
             params[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
             params[:sortColumn] = ''
-            redirect_to movies_path(sortColumn: '', ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
             params[:home]="1"
+            redirect_to movies_path(sortColumn: '', ratings: Hash[Movie.all_ratings.collect { |item| [item, '1'] }])
             return
         else
           if !(session[:ratings].blank?)
