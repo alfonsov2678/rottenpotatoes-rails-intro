@@ -35,7 +35,10 @@ class MoviesController < ApplicationController
             redirect_to movies_path(sortColumn: '', ratings: params[:ratings])
             return 
           end
+        else
+          redirect_to movies_path(sortColumn: params[:sort_column], ratings: params[:ratings])
         end
+
       end
     end
     
