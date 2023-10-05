@@ -50,6 +50,7 @@ class MoviesController < ApplicationController
           @movies = Movie.with_ratings(session[:ratings].keys()).order(@sort_column)
           @ratings_to_show = session[:ratings].keys()
           params[:ratings] = session[:ratings]
+          params[:home] = 1
           redirect_to movies_path('sortColumn': session[:sort_column], 'ratings': session[:ratings] )
         end
       else
