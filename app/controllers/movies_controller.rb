@@ -9,7 +9,7 @@ class MoviesController < ApplicationController
   def index
     # CHECK IF BLANK AND BEHAVE NORMALLY
 
-    if params[:home].blank?
+  
       if params[:ratings].blank?
         if params[:sortColumn].blank?
             session[:ratings] = Hash[Movie.all_ratings.collect { |item| [item, '1']}]
@@ -40,7 +40,6 @@ class MoviesController < ApplicationController
         end
 
       end
-    end
     
     if session[:sort_column] || session[:ratings]
       @all_ratings = Movie.all_ratings
